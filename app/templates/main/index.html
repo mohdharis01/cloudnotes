@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="text-center py-5">
+  <h1 class="display-5 fw-bold">CloudNotes</h1>
+  <p class="lead text-muted">Your private notes, stored securely in the cloud.</p>
+  <a class="btn btn-primary btn-lg" href="{{ url_for('auth.register') }}">Get started</a>
+</div>
+{% endblock %}
