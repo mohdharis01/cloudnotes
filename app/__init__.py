@@ -12,6 +12,8 @@ def create_app(config_class=Config):
     csrf.init_app(app)
     login_manager.init_app(app)
 
+    from app import models  # noqa: F401
+
     @app.route("/health")
     def health():
         return {"status": "ok"}
