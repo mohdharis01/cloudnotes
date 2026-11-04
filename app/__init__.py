@@ -17,9 +17,16 @@ def create_app(config_class=Config):
     from app import models  # noqa: F401
     from app.auth import bp as auth_bp
     from app.main import bp as main_bp
+    from app.notes import bp as notes_bp
 
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(main_bp)
+    app.register_blueprint(notes_bp, url_prefix="/notes")
+
+    @app.errorhandler(404)
+    def not_found(e):
+        from flask import render_template
+        return render_template("errors/404.html"), 404
 
     @app.route("/health")
     def health():

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}{{ note.title }} - CloudNotes{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card shadow-sm"><div class="card-body p-4">
+      <h1 class="h3">{{ note.title }}</h1>
+      <p class="small text-muted">
+        Created {{ note.created_at.strftime('%d %b %Y, %H:%M') }} UTC &middot;
+        Updated {{ note.updated_at.strftime('%d %b %Y, %H:%M') }} UTC
+      </p>
+      <div style="white-space: pre-wrap;">{{ note.content }}</div>
+      <hr>
+      <div class="d-flex gap-2">
+        <a class="btn btn-outline-primary" href="{{ url_for('notes.edit', note_id=note.id) }}">Edit</a>
+        <form method="post" action="{{ url_for('notes.delete', note_id=note.id) }}"
+              onsubmit="return confirm('Delete this note permanently?');">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="btn btn-outline-danger">Delete</button>
+        </form>
+        <a class="btn btn-link ms-auto" href="{{ url_for('main.dashboard') }}">Back</a>
+      </div>
+    </div></div>
+  </div>
+</div>
+{% endblock %}
