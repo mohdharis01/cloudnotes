@@ -29,8 +29,11 @@
         </h2>
         <p class="card-text">{{ note.content|truncate(140) }}</p>
       </div>
-      <div class="px-3 pb-3 note-date">
-        Updated {{ note.updated_at.strftime('%d %b %Y, %H:%M') }} UTC
+      <div class="px-3 pb-3 d-flex justify-content-between align-items-center gap-2">
+        <span class="note-date">Updated {{ note.updated_at.strftime('%d %b %Y, %H:%M') }} UTC</span>
+        {% if note.group %}
+        <span class="group-tag"><span class="group-dot" style="background: {{ note.group.color }}"></span>{{ note.group.name }}</span>
+        {% endif %}
       </div>
     </div>
   </div>

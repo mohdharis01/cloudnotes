@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}{{ group.name }} - CloudNotes{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-1">
+  <h1 class="greeting d-flex align-items-center gap-2">
+    <span class="group-dot big" style="background: {{ group.color }}"></span>{{ group.name }}
+  </h1>
+  <a class="btn btn-primary" href="{{ url_for('notes.create', group=group.id) }}">+ New note in this group</a>
+</div>
+<p class="greeting-sub mb-3">{{ notes|length }} note{{ '' if notes|length == 1 else 's' }}</p>
+
+<div class="d-flex gap-2 mb-4">
+  <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('main.group_edit', group_id=group.id) }}">Edit group</a>
+  <form method="post" action="{{ url_for('main.group_delete', group_id=group.id) }}"
+        onsubmit="return confirm('Delete this group? Its notes are kept and move to No group.');">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button class="btn btn-outline-danger btn-sm">Delete group</button>
+  </form>
+</div>
+
+{% if notes %}
+<div class="row g-3">
+  {% for note in notes %}
+  <div class="col-md-6 col-lg-4">
+    <div class="card note-card h-100">
+      <div class="card-body">
+        <h2 class="h6 card-title mb-2">
+          <a class="stretched-link text-decoration-none" href="{{ url_for('notes.detail', note_id=note.id) }}">{{ note.title }}</a>
+        </h2>
+        <p class="card-text">{{ note.content|truncate(140) }}</p>
+      </div>
+      <div class="px-3 pb-3 note-date">
+        Updated {{ note.updated_at.strftime('%d %b %Y, %H:%M') }} UTC
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="text-center text-muted py-5">
+  This group is empty. Click "+ New note in this group" to add the first one.
+</div>
+{% endif %}
+{% endblock %}

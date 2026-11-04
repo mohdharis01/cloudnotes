@@ -5,6 +5,11 @@
   <div class="col-lg-8">
     <div class="card shadow-sm"><div class="card-body p-4">
       <h1 class="h3">{{ note.title }}</h1>
+      {% if note.group %}
+      <p class="mb-2">
+        <a class="group-tag" href="{{ url_for('main.group_detail', group_id=note.group.id) }}"><span class="group-dot" style="background: {{ note.group.color }}"></span>{{ note.group.name }}</a>
+      </p>
+      {% endif %}
       <p class="small text-muted">
         Created {{ note.created_at.strftime('%d %b %Y, %H:%M') }} UTC &middot;
         Updated {{ note.updated_at.strftime('%d %b %Y, %H:%M') }} UTC

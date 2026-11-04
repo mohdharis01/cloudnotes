@@ -10,6 +10,10 @@
         {{ form.hidden_tag() }}
         {{ field(form.title) }}
         <div class="mb-3">
+          {{ form.group_id.label(class="form-label") }}
+          {{ form.group_id(class="form-select") }}
+        </div>
+        <div class="mb-3">
           {{ form.content.label(class="form-label") }}
           {{ form.content(class="form-control", rows=10) }}
         </div>

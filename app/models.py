@@ -22,12 +22,28 @@ class User(UserMixin, db.Model):
     notes = db.relationship(
         "Note", back_populates="owner", cascade="all, delete-orphan"
     )
+    groups = db.relationship(
+        "Group", back_populates="owner", cascade="all, delete-orphan"
+    )
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+
+class Group(db.Model):
+    __tablename__ = "note_groups"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(60), nullable=False)
+    color = db.Column(db.String(7), nullable=False, default="#22d3ee")
+    created_at = db.Column(db.DateTime, default=utcnow, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False, index=True)
+
+    owner = db.relationship("User", back_populates="groups")
+    notes = db.relationship("Note", back_populates="group")
 
 
 class Note(db.Model):
@@ -39,8 +55,10 @@ class Note(db.Model):
     created_at = db.Column(db.DateTime, default=utcnow, nullable=False)
     updated_at = db.Column(db.DateTime, default=utcnow, onupdate=utcnow, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False, index=True)
+    group_id = db.Column(db.Integer, db.ForeignKey("note_groups.id"), nullable=True, index=True)
 
     owner = db.relationship("User", back_populates="notes")
+    group = db.relationship("Group", back_populates="notes")
     attachments = db.relationship(
         "Attachment", back_populates="note", cascade="all, delete-orphan"
     )

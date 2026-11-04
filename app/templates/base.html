@@ -21,6 +21,23 @@
            href="{{ url_for('main.dashboard') }}">My notes</a>
       </nav>
 
+      <div class="side-groups">
+        <div class="side-label">
+          <span>Groups</span>
+          <a class="side-plus" href="{{ url_for('main.group_new') }}" aria-label="New group">+</a>
+        </div>
+        <nav class="side-nav" aria-label="Groups">
+          {% for g in sidebar_groups %}
+          <a class="side-link {% if request.endpoint == 'main.group_detail' and request.view_args and request.view_args.get('group_id') == g.id %}active{% endif %}"
+             href="{{ url_for('main.group_detail', group_id=g.id) }}">
+            <span class="group-dot" style="background: {{ g.color }}"></span>{{ g.name }}
+          </a>
+          {% else %}
+          <div class="side-empty">No groups yet</div>
+          {% endfor %}
+        </nav>
+      </div>
+
       <div class="sidebar-bottom">
         <div class="user-card">
           <div class="user-avatar">{{ current_user.username[0]|upper }}</div>

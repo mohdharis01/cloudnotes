@@ -47,7 +47,7 @@ def test_login_success_shows_dashboard(client):
     r = client.post("/auth/login", data={
         "email": "alice@example.com", "password": "password123"
     }, follow_redirects=True)
-    assert b"Your notes" in r.data
+    assert b"Welcome back" in r.data
 
 
 def test_dashboard_requires_login(client):
